@@ -53,6 +53,10 @@ identificador	= {letra}+
 nuevalinea		= \n | \n\r | \r\n
 espacio		= [ \t]+
 %%
+"var"       {	if(debug) System.out.println("token var");
+			return sf.newSymbol("var",sym.VAR);
+			}
+
 "if"            {	if(debug) System.out.println("token IF");
 			return sf.newSymbol("IF",sym.IF);
 			}
@@ -85,6 +89,10 @@ espacio		= [ \t]+
 			}
 ":="            {	if(debug) System.out.println("token ASSIGN");
 			return sf.newSymbol("ASSIGN",sym.ASSIGN);
+			}
+
+":"            {	if(debug) System.out.println("token TYPE_IDENTIFIER");
+			return sf.newSymbol("TYPE_IDENTIFIER",sym.TYPE_IDENTIFIER);
 			}
 "="             {	if(debug) System.out.println("token EQ");
 			return sf.newSymbol("EQ",sym.EQ);

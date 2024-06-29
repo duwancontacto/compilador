@@ -71,6 +71,8 @@ terminal OVER;
 terminal LPAREN;
 terminal RPAREN;
 terminal SEMI;
+terminal VAR;
+terminal TYPE_IDENTIFIER;
 
 /* Simbolos No Terminales */
 non terminal program;
@@ -243,10 +245,10 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(debug) System.out.println("\t regla 1
 				RESULT=null;
 				:}
 		;
- decl_stmt ::= INTEGER ID:variable {: if(debug) System.out.println("\t regla 13a");
+ decl_stmt ::= VAR ID:variable TYPE_IDENTIFIER INTEGER {: if(debug) System.out.println("\t regla 13a");
                                         	RESULT= new NodoDeclaracion(tipoDecl.entero, variable.toString());
                                         :}
-        | BOOLEAN ID:variable {: if(debug) System.out.println("\t regla 13b");
+        | VAR ID:variable TYPE_IDENTIFIER BOOLEAN {: if(debug) System.out.println("\t regla 13b");
                                             RESULT= new NodoDeclaracion(tipoDecl.booleano, variable.toString());
                                     :}
         ;
