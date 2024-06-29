@@ -1,5 +1,5 @@
 package ve.edu.unet.nodosAST;
 
 public enum tipoOp {
-	menor,igual,mas,menos,por,entre,modulo
+	menor,igual,mayor,diferente,menorigual,mayorigual,mas,menos,por,entre,modulo
 }

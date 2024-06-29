@@ -68,6 +68,10 @@ terminal String NUM;
 terminal ASSIGN;
 terminal EQ;
 terminal LT;
+terminal GT;
+terminal NE;
+terminal LE;
+terminal GE;
 terminal PLUS;
 terminal MINUS;
 terminal TIMES;
@@ -202,6 +206,18 @@ exp         ::= simple_exp:exI LT simple_exp:exD	{: if(debug) System.out.println
 		| simple_exp:exI EQ simple_exp:exD	{: if(debug) System.out.println("\t regla 9b"); 
 							RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
 							:}
+		| simple_exp:exI GT simple_exp:exD	{: if(debug) System.out.println("\t regla 9b");
+        							RESULT = new NodoOperacion(exI,tipoOp.mayor,exD);
+        							:}
+        | simple_exp:exI NE simple_exp:exD	{: if(debug) System.out.println("\t regla 9b");
+        							RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
+        							:}
+        | simple_exp:exI LE simple_exp:exD	{: if(debug) System.out.println("\t regla 9b");
+        							RESULT = new NodoOperacion(exI,tipoOp.menorigual,exD);
+        							:}
+        | simple_exp:exI GE simple_exp:exD	{: if(debug) System.out.println("\t regla 9b");
+        							RESULT = new NodoOperacion(exI,tipoOp.mayorigual,exD);
+        							:}
 		| simple_exp:ex	{: if(debug) System.out.println("\t regla 9c"); 
 					RESULT = ex;
 					:}
