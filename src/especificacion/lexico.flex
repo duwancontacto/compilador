@@ -56,6 +56,12 @@ espacio		= [ \t]+
 "if"            {	if(debug) System.out.println("token IF");
 			return sf.newSymbol("IF",sym.IF);
 			}
+"integer"            {	if(debug) System.out.println("token INTEGER");
+			return sf.newSymbol("INTEGER",sym.INTEGER);
+			}
+"boolean"            {	if(debug) System.out.println("token BOOLEAN");
+			return sf.newSymbol("BOOLEAN",sym.BOOLEAN);
+			}
 "then"          { if(debug) System.out.println("token THEN");
 			return sf.newSymbol("THEN",sym.THEN);
 			}
