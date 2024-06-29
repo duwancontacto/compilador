@@ -1,2 +1,5 @@
-package ve.edu.unet.nodosAST;public class tipoDecl {
+package ve.edu.unet.nodosAST;
+
+public enum tipoDecl {
+    entero, booleano
 }

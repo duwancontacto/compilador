@@ -27,6 +27,9 @@ public class Util {
 		    		|| raiz instanceof NodoValor
 		    		|| raiz instanceof NodoIdentificador )
 		    	imprimirNodo(raiz);
+			else if (raiz instanceof NodoDeclaracion){
+				System.out.println("Declaracion: "+((NodoDeclaracion)raiz).getId()+ " " + ((NodoDeclaracion)raiz).getTipo());
+			}
 		    else System.out.println("Tipo de nodo desconocido");;
 		    
 		    /* Hago el recorrido recursivo */
