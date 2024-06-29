@@ -231,7 +231,7 @@ public class Generador {
 							break;
 			case	modulo:	if(UtGen.debug)	UtGen.emitirComentario("-> operacion modulo");
 							UtGen.emitirRO("SUB", UtGen.AC1, UtGen.AC1, UtGen.AC, "op: -");
-							UtGen.emitirRM("JGT", UtGen.AC1, -2 , UtGen.PC, "regreso una instruccion si puedo restar (AC>0)");
+							UtGen.emitirRM("JGE", UtGen.AC1, -2 , UtGen.PC, "regreso una instruccion si puedo restar (AC>0)");
 							UtGen.emitirRO("ADD", UtGen.AC, UtGen.AC1, UtGen.AC, "op: +");
 							break;
 			case	menor:	UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: <");
