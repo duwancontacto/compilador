@@ -1,5 +1,9 @@
-var x:integer;
-read x;
-if not x mod 5 = 0 then
-    write 2;
-end;
+program yo
+begin
+    var x:integer;
+    read x;
+    if not x mod 5 = 0 then
+    begin
+        write 2;
+    end;
+end.

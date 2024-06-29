@@ -1,3 +1,5 @@
+program ciclo_for
+begin
 var x:integer;
 var suma:integer;
 suma := 0;
@@ -6,3 +8,4 @@ begin
     suma := suma + x;
 end;
 write suma;
+end.

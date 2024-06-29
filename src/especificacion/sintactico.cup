@@ -52,6 +52,7 @@ action code {:
 terminal INTEGER;
 terminal BOOLEAN;
 terminal FOR;
+terminal PROGRAM;
 terminal TO;
 terminal DO;
 terminal BEGIN;
@@ -85,6 +86,7 @@ terminal RPAREN;
 terminal SEMI;
 terminal VAR;
 terminal TYPE_IDENTIFIER;
+terminal END_PROGRAM;
 
 /* Simbolos No Terminales */
 non terminal program;
@@ -112,7 +114,7 @@ precedence left OVER;
 precedence left MOD;
 
 /* REGLAS GRAMATICALES */
-program     ::= stmt_seq:s	{: if(debug) System.out.println("\t regla 1"); 
+program     ::= PROGRAM ID BEGIN stmt_seq:s END END_PROGRAM	{: if(debug) System.out.println("\t regla 1");
 					ast = s;
 					:}
 		;
@@ -161,10 +163,10 @@ stmt        ::= if_stmt:sif	SEMI {: if(debug) System.out.println("\t regla 3a");
 				:}
             ;
 
-if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END	{: if(debug) System.out.println("\t regla 4a"); 
+if_stmt     ::= IF exp:ex THEN BEGIN stmt_seq:pthen END	{: if(debug) System.out.println("\t regla 4a");
 		RESULT = new NodoIf(ex,pthen);
 		:}
-		| IF exp:ex THEN stmt_seq:pthen ELSE stmt_seq:pelse END	{: if(debug) System.out.println("\t regla 4b"); 
+		| IF exp:ex THEN BEGIN stmt_seq:pthen END ELSE BEGIN stmt_seq:pelse END	{: if(debug) System.out.println("\t regla 4b");
 		RESULT = new NodoIf(ex,pthen,pelse);		
 		:}
 		;
