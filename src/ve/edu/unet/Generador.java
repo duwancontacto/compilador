@@ -139,7 +139,7 @@ public class Generador {
 		UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadSaltoInicio, "for: jmp hacia la prueba");
 		localidadActual = UtGen.emitirSalto(0);
 		UtGen.cargarRespaldo(localidadSaltoEnd);
-		UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual, "for: jmp hacia el final");
+		UtGen.emitirRM_Abs("JGT", UtGen.AC, localidadActual, "for: jmp hacia el final");
 		UtGen.restaurarRespaldo();
 	}
 
@@ -226,8 +226,8 @@ public class Generador {
 			case	entre:	UtGen.emitirRO("DIV", UtGen.AC, UtGen.AC1, UtGen.AC, "op: /");
 							break;
 			case	modulo:	if(UtGen.debug)	UtGen.emitirComentario("-> operacion modulo");
-							UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: -");
-							UtGen.emitirRM("JGT", UtGen.AC, -1 , UtGen.PC, "regreso una instruccion si puedo restar (AC>0)");
+							UtGen.emitirRO("SUB", UtGen.AC1, UtGen.AC1, UtGen.AC, "op: -");
+							UtGen.emitirRM("JGT", UtGen.AC1, -2 , UtGen.PC, "regreso una instruccion si puedo restar (AC>0)");
 							UtGen.emitirRO("ADD", UtGen.AC, UtGen.AC1, UtGen.AC, "op: +");
 							break;
 			case	menor:	UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: <");
