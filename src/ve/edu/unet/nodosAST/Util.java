@@ -75,9 +75,11 @@ public class Util {
 		    	printSpaces();
 		    	System.out.println("**Expr Izquierda Operacion**");
 		    	imprimirAST(((NodoOperacion)raiz).getOpIzquierdo());
-		    	printSpaces();
-		    	System.out.println("**Expr Derecha Operacion**");		    	
-		    	imprimirAST(((NodoOperacion)raiz).getOpDerecho());
+				if (((NodoOperacion)raiz).getOperacion() != tipoOp.not) {
+					printSpaces();
+					System.out.println("**Expr Derecha Operacion**");
+					imprimirAST(((NodoOperacion) raiz).getOpDerecho());
+				}
 		    }
 		    raiz = raiz.getHermanoDerecha();
 		  }
@@ -117,6 +119,12 @@ static void imprimirNodo( NodoBase raiz )
 			System.out.println("<=");
 		if(sel==tipoOp.mayorigual)
 			System.out.println(">=");
+		if(sel==tipoOp.and)
+			System.out.println("and");
+		if(sel==tipoOp.or)
+			System.out.println("or");
+		if(sel==tipoOp.not)
+			System.out.println("not");
 		if(sel==tipoOp.mas)
 			System.out.println("+");
 		if(sel==tipoOp.menos)

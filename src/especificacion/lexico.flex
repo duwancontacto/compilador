@@ -124,6 +124,15 @@ espacio		= [ \t]+
 ">="             {	if(debug) System.out.println("token GE");
 			return sf.newSymbol("GE",sym.GE);
 			}
+"and"             {	if(debug) System.out.println("token AND");
+			return sf.newSymbol("AND",sym.AND);
+			}
+"or"             {	if(debug) System.out.println("token OR");
+			return sf.newSymbol("OR",sym.OR);
+			}
+"not"             {	if(debug) System.out.println("token NOT");
+			return sf.newSymbol("NOT",sym.NOT);
+			}
 "+"             {	if(debug) System.out.println("token PLUS");
 			return sf.newSymbol("PLUS",sym.PLUS);
 			}

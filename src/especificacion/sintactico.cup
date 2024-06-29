@@ -72,6 +72,9 @@ terminal GT;
 terminal NE;
 terminal LE;
 terminal GE;
+terminal AND;
+terminal OR;
+terminal NOT;
 terminal PLUS;
 terminal MINUS;
 terminal TIMES;
@@ -94,6 +97,7 @@ non terminal NodoBase read_stmt;
 non terminal NodoBase write_stmt;
 non terminal NodoBase exp;
 non terminal NodoBase simple_exp;
+non terminal NodoBase logic_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
 non terminal NodoBase decl_stmt;
@@ -200,25 +204,25 @@ write_stmt  ::= WRITE exp:ex	{: if(debug) System.out.println("\t regla 8");
 					:}
 		;
 
-exp         ::= simple_exp:exI LT simple_exp:exD	{: if(debug) System.out.println("\t regla 9a"); 
+logic_exp         ::= simple_exp:exI LT simple_exp:exD	{: if(debug) System.out.println("\t regla 9a");
 								RESULT = new NodoOperacion(exI,tipoOp.menor,exD);
 								:} 
 		| simple_exp:exI EQ simple_exp:exD	{: if(debug) System.out.println("\t regla 9b"); 
 							RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
 							:}
-		| simple_exp:exI GT simple_exp:exD	{: if(debug) System.out.println("\t regla 9b");
+		| simple_exp:exI GT simple_exp:exD	{: if(debug) System.out.println("\t regla 9c");
         							RESULT = new NodoOperacion(exI,tipoOp.mayor,exD);
         							:}
-        | simple_exp:exI NE simple_exp:exD	{: if(debug) System.out.println("\t regla 9b");
+        | simple_exp:exI NE simple_exp:exD	{: if(debug) System.out.println("\t regla 9d");
         							RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
         							:}
-        | simple_exp:exI LE simple_exp:exD	{: if(debug) System.out.println("\t regla 9b");
+        | simple_exp:exI LE simple_exp:exD	{: if(debug) System.out.println("\t regla 9e");
         							RESULT = new NodoOperacion(exI,tipoOp.menorigual,exD);
         							:}
-        | simple_exp:exI GE simple_exp:exD	{: if(debug) System.out.println("\t regla 9b");
+        | simple_exp:exI GE simple_exp:exD	{: if(debug) System.out.println("\t regla 9f");
         							RESULT = new NodoOperacion(exI,tipoOp.mayorigual,exD);
         							:}
-		| simple_exp:ex	{: if(debug) System.out.println("\t regla 9c"); 
+		| simple_exp:ex	{: if(debug) System.out.println("\t regla 9g");
 					RESULT = ex;
 					:}
 		;
@@ -287,3 +291,21 @@ for_stmt ::= FOR assign_stmt:asi TO exp:ex DO BEGIN stmt_seq:cuerpo END
                   RESULT = new NodoFor(asi, ex, cuerpo);
             :}
          ;
+
+exp  ::=  logic_exp:exI AND logic_exp:exD {:
+                if(debug) System.out.println("\t regla 15a");
+                RESULT = new NodoOperacion(exI,tipoOp.and,exD);
+            :}
+         | logic_exp:exI OR logic_exp:exD {:
+                if(debug) System.out.println("\t regla 15b");
+                RESULT = new NodoOperacion(exI,tipoOp.or,exD);
+              :}
+         | NOT logic_exp:ex {:
+                if(debug) System.out.println("\t regla 15c");
+                RESULT = new NodoOperacion(exI,tipoOp.not, new NodoValor(0));
+             :}
+         | logic_exp:ex {:
+                if(debug) System.out.println("\t regla 15d");
+                RESULT = ex;
+         :}
+      ;
