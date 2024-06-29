@@ -23,6 +23,7 @@ public class sym {
   public static final int LPAREN = 26;
   public static final int WRITE = 15;
   public static final int ID = 16;
+  public static final int TYPE_IDENTIFIER = 30;
   public static final int NUM = 17;
   public static final int DO = 6;
   public static final int BEGIN = 7;
@@ -37,6 +38,7 @@ public class sym {
   public static final int FOR = 4;
   public static final int TO = 5;
   public static final int REPEAT = 12;
+  public static final int VAR = 29;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -66,7 +68,9 @@ public class sym {
   "MOD",
   "LPAREN",
   "RPAREN",
-  "SEMI"
+  "SEMI",
+  "VAR",
+  "TYPE_IDENTIFIER"
   };
 }
 

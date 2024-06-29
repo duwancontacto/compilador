@@ -1,5 +1,5 @@
-integer x;
-integer suma;
+var x:integer;
+var suma:integer;
 suma := 0;
 for x := 1 to 4 do
 begin

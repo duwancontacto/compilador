@@ -1,6 +1,6 @@
-integer x;
-integer y;
-integer result;
+var x : integer;
+var y: integer;
+var result : integer;
 read x;
 read y;
 result := x mod y;
