@@ -29,6 +29,9 @@ public class TablaSimbolos {
 	    else if (raiz instanceof NodoRepeat){
 	    	cargarTabla(((NodoRepeat)raiz).getCuerpo());
 	    }
+		else if (raiz instanceof NodoFor){
+			cargarTabla(((NodoFor)raiz).getCuerpo());
+		}
 		else if(raiz instanceof NodoDeclaracion){
 			NodoDeclaracion nodo = (NodoDeclaracion)raiz;
 			InsertarSimbolo(nodo.getId(), -1, nodo.getTipo());

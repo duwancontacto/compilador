@@ -75,8 +75,14 @@ public class Generador {
 			generarIdentificador(nodo);
 		}else if (nodo instanceof NodoOperacion){
 			generarOperacion(nodo);
-		}else{
-			System.out.println("BUG: Tipo de nodo a generar desconocido");
+		}
+		else if (nodo instanceof NodoFor){
+			generarFor(nodo);
+		}
+		else{
+			if(!(nodo instanceof NodoDeclaracion)) {
+				System.out.println("BUG: Tipo de nodo a generar desconocido");
+			}
 		}
 		/*Si el hijo de extrema izquierda tiene hermano a la derecha lo genero tambien*/
 		if(nodo.TieneHermano())
@@ -112,18 +118,42 @@ public class Generador {
 		
 		if(UtGen.debug)	UtGen.emitirComentario("<- if");
 	}
-	
+
+	private static void generarFor(NodoBase nodo){
+		NodoFor n = (NodoFor) nodo;
+		int localidadSaltoInicio, localidadSaltoEnd, localidadActual;
+		generar(n.getAsignacion());
+		String variable = ((NodoAsignacion)n.getAsignacion()).getIdentificador();
+		localidadSaltoInicio = UtGen.emitirSalto(0);
+		UtGen.emitirComentario("for: el salto hacia el final (luego del cuerpo) del repeat debe estar aqui");
+		/* Crear la prueba del for*/
+		NodoOperacion prueba = new NodoOperacion(new NodoIdentificador(variable), tipoOp.menos, n.getExpresion());
+		generar(prueba);
+		localidadSaltoEnd = UtGen.emitirSalto(1);
+		/* Genero el cuerpo del for */
+		generar(n.getCuerpo());
+		/* Crear el incremento del for*/
+		NodoOperacion nodoOperacion = new NodoOperacion(new NodoIdentificador(variable), tipoOp.mas, new NodoValor(1));
+		NodoAsignacion incremento = new NodoAsignacion(variable, nodoOperacion);
+		generar(incremento);
+		UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadSaltoInicio, "for: jmp hacia la prueba");
+		localidadActual = UtGen.emitirSalto(0);
+		UtGen.cargarRespaldo(localidadSaltoEnd);
+		UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual, "for: jmp hacia el final");
+		UtGen.restaurarRespaldo();
+	}
+
 	private static void generarRepeat(NodoBase nodo){
     	NodoRepeat n = (NodoRepeat)nodo;
 		int localidadSaltoInicio;
 		if(UtGen.debug)	UtGen.emitirComentario("-> repeat");
-			localidadSaltoInicio = UtGen.emitirSalto(0);
-			UtGen.emitirComentario("repeat: el salto hacia el final (luego del cuerpo) del repeat debe estar aqui");
+		localidadSaltoInicio = UtGen.emitirSalto(0);
+		UtGen.emitirComentario("repeat: el salto hacia el final (luego del cuerpo) del repeat debe estar aqui");
 			/* Genero el cuerpo del repeat */
-			generar(n.getCuerpo());
+		generar(n.getCuerpo());
 			/* Genero el codigo de la prueba del repeat */
-			generar(n.getPrueba());
-			UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadSaltoInicio, "repeat: jmp hacia el inicio del cuerpo");
+		generar(n.getPrueba());
+		UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadSaltoInicio, "repeat: jmp hacia el inicio del cuerpo");
 		if(UtGen.debug)	UtGen.emitirComentario("<- repeat");
 	}		
 	

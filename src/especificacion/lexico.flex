@@ -53,6 +53,18 @@ identificador	= {letra}+
 nuevalinea		= \n | \n\r | \r\n
 espacio		= [ \t]+
 %%
+"for"            {	if(debug) System.out.println("token FOR");
+			return sf.newSymbol("FOR",sym.FOR);
+			}
+"to"            {	if(debug) System.out.println("token TO");
+			return sf.newSymbol("TO",sym.TO);
+			}
+"do"            {	if(debug) System.out.println("token DO");
+			return sf.newSymbol("DO",sym.DO);
+			}
+"begin"            {	if(debug) System.out.println("token BEGIN");
+			return sf.newSymbol("BEGIN",sym.BEGIN);
+			}
 "if"            {	if(debug) System.out.println("token IF");
 			return sf.newSymbol("IF",sym.IF);
 			}

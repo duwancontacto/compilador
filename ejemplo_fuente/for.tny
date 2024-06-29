@@ -1,0 +1,8 @@
+integer x;
+integer suma;
+suma := 0;
+for x := 1 to 4 do
+begin
+    suma := suma + x;
+end;
+write suma;
