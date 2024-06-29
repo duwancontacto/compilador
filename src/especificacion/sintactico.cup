@@ -72,6 +72,7 @@ terminal PLUS;
 terminal MINUS;
 terminal TIMES;
 terminal OVER;
+terminal MOD;
 terminal LPAREN;
 terminal RPAREN;
 terminal SEMI;
@@ -97,7 +98,8 @@ non terminal NodoBase for_stmt;
 precedence left PLUS;
 precedence left MINUS;
 precedence left TIMES;
-
+precedence left OVER;
+precedence left MOD;
 
 /* REGLAS GRAMATICALES */
 program     ::= stmt_seq:s	{: if(debug) System.out.println("\t regla 1"); 
@@ -214,13 +216,16 @@ simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(debug) System.out.println("\t
 				:}
 		;
 
-term        ::= term:exI TIMES factor:exD	{: if(debug) System.out.println("\t regla 11a"); 
+term     ::= term:exI TIMES factor:exD	{: if(debug) System.out.println("\t regla 11a");
 							RESULT = new NodoOperacion(exI,tipoOp.por,exD);
 							:}
 		| term:exI OVER factor:exD	{: if(debug) System.out.println("\t regla 11b"); 
 						RESULT = new NodoOperacion(exI,tipoOp.entre,exD);
 						:}
-		| factor:ex	{: if(debug) System.out.println("\t regla 11c"); 
+		| term:exI MOD factor:exD	{: if(debug) System.out.println("\t regla 11b");
+        						RESULT = new NodoOperacion(exI,tipoOp.modulo,exD);
+        						:}
+		| factor:ex	{: if(debug) System.out.println("\t regla 11d");
 					RESULT=ex;
 					:}
 		;

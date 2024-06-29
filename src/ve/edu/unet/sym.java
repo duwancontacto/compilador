@@ -9,17 +9,18 @@ package ve.edu.unet;
 public class sym {
   /* terminals */
   public static final int TIMES = 23;
+  public static final int MOD = 25;
   public static final int READ = 14;
   public static final int OVER = 24;
   public static final int LT = 20;
   public static final int ELSE = 10;
   public static final int PLUS = 21;
-  public static final int RPAREN = 26;
+  public static final int RPAREN = 27;
   public static final int THEN = 9;
-  public static final int SEMI = 27;
+  public static final int SEMI = 28;
   public static final int END = 11;
   public static final int IF = 8;
-  public static final int LPAREN = 25;
+  public static final int LPAREN = 26;
   public static final int WRITE = 15;
   public static final int ID = 16;
   public static final int NUM = 17;
@@ -62,6 +63,7 @@ public class sym {
   "MINUS",
   "TIMES",
   "OVER",
+  "MOD",
   "LPAREN",
   "RPAREN",
   "SEMI"
