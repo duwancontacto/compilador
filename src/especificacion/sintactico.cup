@@ -134,7 +134,7 @@ stmt_seq    ::= stmt_seq:ini stmt:sent	{: if(debug) System.out.println("\t regla
 				:}
 		;
 
-stmt        ::= if_stmt:sif	{: if(debug) System.out.println("\t regla 3a"); 
+stmt        ::= if_stmt:sif	SEMI {: if(debug) System.out.println("\t regla 3a");
 					RESULT=sif;
 					:}
             | repeat_stmt:srep SEMI {: if(debug) System.out.println("\t regla 3b");
@@ -302,7 +302,7 @@ exp  ::=  logic_exp:exI AND logic_exp:exD {:
               :}
          | NOT logic_exp:ex {:
                 if(debug) System.out.println("\t regla 15c");
-                RESULT = new NodoOperacion(exI,tipoOp.not, new NodoValor(0));
+                RESULT = new NodoOperacion(ex,tipoOp.not, new NodoValor(0));
              :}
          | logic_exp:ex {:
                 if(debug) System.out.println("\t regla 15d");

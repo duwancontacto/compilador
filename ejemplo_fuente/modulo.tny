@@ -5,3 +5,7 @@ read x;
 read y;
 result := x mod y;
 write result;
+
+
+
+

@@ -25,7 +25,7 @@ public class Generador {
 	 * 
 	 * - Se decrementa (desplazamientoTmp--) despues de cada almacenamiento y
 	 * 
-	 * - Se incrementa (desplazamientoTmp++) despues de cada eliminacion/carga en 
+	 * - Se incrementa (desplazamientoTmp++) despues de cada eliminacion/carga en
 	 *   otra variable de un valor de la pila.
 	 * 
 	 * Pudiendose ver como el apuntador hacia el tope de la pila temporal
@@ -108,13 +108,14 @@ public class Generador {
 		UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual, "if: jmp hacia else");
 		UtGen.restaurarRespaldo();
 		/*Genero la parte ELSE*/
-		if(n.getParteElse()!=null){
+		if(n.getParteElse()!=null) {
 			generar(n.getParteElse());
-			localidadActual = UtGen.emitirSalto(0);
-			UtGen.cargarRespaldo(localidadSaltoEnd);
-			UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual, "if: jmp hacia el final");
-			UtGen.restaurarRespaldo();
-    	}
+		}
+		localidadActual = UtGen.emitirSalto(0);
+		UtGen.cargarRespaldo(localidadSaltoEnd);
+		UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual, "if: jmp hacia el final");
+		UtGen.restaurarRespaldo();
+
 		
 		if(UtGen.debug)	UtGen.emitirComentario("<- if");
 	}

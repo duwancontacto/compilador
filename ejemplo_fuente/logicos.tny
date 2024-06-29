@@ -2,4 +2,4 @@ var x:integer;
 read x;
 if not x mod 5 = 0 then
     write 2;
-end
+end;
