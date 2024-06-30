@@ -71,6 +71,12 @@ public class Generador {
 					totalError++;
 					System.out.println("*** Tipos de datos en la asignacion no coinciden");
 				}
+				if (nodo.getIndex() != null) {
+					if (getTipoDeDato(nodo.getIndex()) != tipoDecl.entero) {
+						totalError++;
+						System.out.println("*** el indice para la asignacion de vectores tiene que ser entero");
+					}
+				}
 			}
 			else if(raiz instanceof NodoLeer){
 				NodoLeer nodo = (NodoLeer)raiz;
@@ -78,6 +84,13 @@ public class Generador {
 				if(tipo != tipoDecl.entero){
 					totalError++;
 					System.out.println("*** Lectura de variabls solo permite valores enteros");
+				}
+
+				if (nodo.getIndex() != null) {
+					if (getTipoDeDato(nodo.getIndex()) != tipoDecl.entero) {
+						totalError++;
+						System.out.println("*** el indice para la asignacion de vectores tiene que ser entero");
+					}
 				}
 			}
 			else if (raiz instanceof NodoFor){
@@ -155,6 +168,14 @@ public class Generador {
 			return tipoDecl.entero;
 		}
 		else if(exp instanceof NodoIdentificador){
+			NodoIdentificador nodo = (NodoIdentificador) exp;
+			if (nodo.getIndice() != null) {
+				if (getTipoDeDato(nodo.getIndice()) != tipoDecl.entero) {
+					totalError++;
+					System.out.println("*** el indice para la asignacion de vectores tiene que ser entero");
+				}
+			}
+
 			return tablaSimbolos.BuscarSimbolo(((NodoIdentificador)exp).getNombre()).getTipo();
 		}
 		return tipoDecl.vacio;
