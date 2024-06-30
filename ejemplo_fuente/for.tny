@@ -1,5 +1,5 @@
 var x:integer;
-var suma:integer;
+var suma:boolean;
 suma := 0;
 for x := 1 to 4 do
 begin

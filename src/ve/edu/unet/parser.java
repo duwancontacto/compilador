@@ -303,8 +303,10 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
 		ts.ImprimirClaves();
 		Generador.setTablaSimbolos(ts);
 		Generador.analisisSemantico(root);
-		if(Generador.totalError == 0)
-		    Generador.generarCodigoObjeto(root);
+		if(Generador.totalError == 0) {
+            System.out.println(" ---> sin errores");
+            Generador.generarCodigoObjeto(root);
+        }
 	}
 
 
@@ -1038,7 +1040,7 @@ class CUP$parser$actions {
 		NodoBase ex = (NodoBase)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 if(debug) System.out.println("\t regla 15c");
-                RESULT = new NodoOperacion(exI,tipoOp.not, new NodoValor(0));
+                RESULT = new NodoOperacion(ex,tipoOp.not, new NodoValor(0));
              
               CUP$parser$result = parser.getSymbolFactory().newSymbol("exp",8, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

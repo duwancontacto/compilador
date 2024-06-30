@@ -42,6 +42,7 @@ public class Generador {
 	}
 
 	public static void analisisSemantico(NodoBase raiz) {
+		System.out.println("\n\n------ ANALISIS SEMANTICO DEL AST ------\n\n");
 		while (raiz != null) {
 			/* Hago el recorrido recursivo */
 			if (raiz instanceof  NodoIf){
