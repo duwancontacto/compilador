@@ -53,6 +53,9 @@ identificador	= {letra}+
 nuevalinea		= \n | \n\r | \r\n
 espacio		= [ \t]+
 %%
+"program"            {	if(debug) System.out.println("token PROGRAM");
+			return sf.newSymbol("PROGRAM",sym.PROGRAM);
+			}
 "for"            {	if(debug) System.out.println("token FOR");
 			return sf.newSymbol("FOR",sym.FOR);
 			}
@@ -154,8 +157,17 @@ espacio		= [ \t]+
 ")"             {	if(debug) System.out.println("token RPAREN");
 			return sf.newSymbol("RPAREN",sym.RPAREN);
 			}
+"["             {	if(debug) System.out.println("token LCORCHETE");
+			return sf.newSymbol("LCORCHETE",sym.LCORCHETE);
+			}
+"]"             {	if(debug) System.out.println("token RCORCHETE");
+			return sf.newSymbol("RCORCHETE",sym.RCORCHETE);
+			}
 ";"             {	if(debug) System.out.println("token SEMI");
 			return sf.newSymbol("SEMI",sym.SEMI);
+			}
+"."             {	if(debug) System.out.println("token END_PROGRAM");
+			return sf.newSymbol("END_PROGRAM",sym.END_PROGRAM);
 			}
 {numero}        {	if(debug) System.out.println("token NUM");
 			return sf.newSymbol("NUM",sym.NUM,new String(yytext()));

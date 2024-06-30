@@ -2,14 +2,18 @@
   in TINY language -
   computes factorial
 }
+program fac
+begin
 var x : integer;
 var fact : integer;
 read x; { input an integer }
 if 0 < x then { don't compute if x <= 0 }
+begin
   fact := 1;
   repeat
     fact := fact * x;
     x := x - 1;
   until x = 0;
   write fact; { output factorial of x }
-end
+end;
+end.

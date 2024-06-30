@@ -34,14 +34,17 @@ public class TablaSimbolos {
 		}
 		else if(raiz instanceof NodoDeclaracion){
 			NodoDeclaracion nodo = (NodoDeclaracion)raiz;
-			InsertarSimbolo(nodo.getId(), -1, nodo.getTipo());
+			if (nodo.getSize() == 0)
+				InsertarSimbolo(nodo.getId(), -1, nodo.getTipo());
+			else
+				InsertarSimbolo(nodo.getId(), -1, nodo.getTipo(), nodo.getSize());
 		}
 
 	    raiz = raiz.getHermanoDerecha();
 	  }
 	}
 	
-	//true es nuevo no existe se insertara, false ya existe NO se vuelve a insertar 
+	//true es nuevo no existe se insertara, false ya existe NO se vuelve a insertar
 	public boolean InsertarSimbolo(String identificador, int numLinea, tipoDecl tipo){
 		RegistroSimbolo simbolo;
 		if(tabla.containsKey(identificador)){
@@ -49,7 +52,20 @@ public class TablaSimbolos {
 		}else{
 			simbolo= new RegistroSimbolo(identificador,numLinea,direccion++, tipo);
 			tabla.put(identificador,simbolo);
-			return true;			
+			return true;
+		}
+	}
+
+	//agregar vectores a tabla de simbolos
+	public boolean InsertarSimbolo(String identificador, int numLinea, tipoDecl tipo, int size){
+		RegistroSimbolo simbolo;
+		if(tabla.containsKey(identificador)){
+			return false;
+		}else{
+			simbolo= new RegistroSimbolo(identificador,numLinea,direccion, tipo);
+			direccion += size;
+			tabla.put(identificador,simbolo);
+			return true;
 		}
 	}
 	

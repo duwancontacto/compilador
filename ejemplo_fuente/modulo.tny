@@ -1,3 +1,5 @@
+program modulo
+begin
 var x : integer;
 var y: integer;
 var result : integer;
@@ -5,3 +7,7 @@ read x;
 read y;
 result := x mod y;
 write result;
+end.
+
+
+

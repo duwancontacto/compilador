@@ -3,17 +3,19 @@ package ve.edu.unet.nodosAST;
 public class NodoAsignacion extends NodoBase {
 	private String identificador;
 	private NodoBase expresion;
-	
-	public NodoAsignacion(String identificador) {
-		super();
-		this.identificador = identificador;
-		this.expresion = null;
-	}
+	private NodoBase index = null;
 	
 	public NodoAsignacion(String identificador, NodoBase expresion) {
 		super();
 		this.identificador = identificador;
 		this.expresion = expresion;
+	}
+
+	public NodoAsignacion(String identificador, NodoBase expresion, NodoBase index) {
+		super();
+		this.identificador = identificador;
+		this.expresion = expresion;
+		this.index = index;
 	}
 
 	public String getIdentificador() {
@@ -32,6 +34,12 @@ public class NodoAsignacion extends NodoBase {
 		this.expresion = expresion;
 	}
 	
-	
+	public NodoBase getIndex() {
+		return index;
+	}
+
+	public void setIndex(NodoBase index) {
+		this.index = index;
+	}
 	
 }

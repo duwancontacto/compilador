@@ -25,7 +25,7 @@ public class Generador {
 	 * 
 	 * - Se decrementa (desplazamientoTmp--) despues de cada almacenamiento y
 	 * 
-	 * - Se incrementa (desplazamientoTmp++) despues de cada eliminacion/carga en 
+	 * - Se incrementa (desplazamientoTmp++) despues de cada eliminacion/carga en
 	 *   otra variable de un valor de la pila.
 	 * 
 	 * Pudiendose ver como el apuntador hacia el tope de la pila temporal
@@ -228,13 +228,14 @@ public class Generador {
 		UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual, "if: jmp hacia else");
 		UtGen.restaurarRespaldo();
 		/*Genero la parte ELSE*/
-		if(n.getParteElse()!=null){
+		if(n.getParteElse()!=null) {
 			generar(n.getParteElse());
-			localidadActual = UtGen.emitirSalto(0);
-			UtGen.cargarRespaldo(localidadSaltoEnd);
-			UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual, "if: jmp hacia el final");
-			UtGen.restaurarRespaldo();
-    	}
+		}
+		localidadActual = UtGen.emitirSalto(0);
+		UtGen.cargarRespaldo(localidadSaltoEnd);
+		UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual, "if: jmp hacia el final");
+		UtGen.restaurarRespaldo();
+
 		
 		if(UtGen.debug)	UtGen.emitirComentario("<- if");
 	}
@@ -285,8 +286,21 @@ public class Generador {
 		generar(n.getExpresion());
 		/* Ahora almaceno el valor resultante */
 		direccion = tablaSimbolos.getDireccion(n.getIdentificador());
-		UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "asignacion: almaceno el valor para el id "+n.getIdentificador());
-		if(UtGen.debug)	UtGen.emitirComentario("<- asignacion");
+		if(n.getIndex() == null) {
+			UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "asignacion: almaceno el valor para el id " + n.getIdentificador());
+		}
+		else{
+			UtGen.emitirRM("ST", UtGen.AC, desplazamientoTmp--, UtGen.MP, "asignacion: push en la pila valor a guardar");
+			UtGen.emitirRM("LDC", UtGen.AC, direccion, 0, "cargar direccion de memoria");
+			UtGen.emitirRM("ST", UtGen.AC, desplazamientoTmp--, UtGen.MP, "asignacion: push en la pila tmp direccion base");
+			generar(n.getIndex());
+			UtGen.emitirRM("LD", UtGen.AC1, ++desplazamientoTmp, UtGen.MP, "asignacion: pop o cargo de la pila el valor de la direccion en AC1");
+			UtGen.emitirRO("ADD", UtGen.GP, UtGen.AC1, UtGen.AC, "calculo direccion real");
+			UtGen.emitirRM("LD", UtGen.AC, ++desplazamientoTmp, UtGen.MP, "asignacion: pop o cargo de la pila el valor a guardar en AC");
+			UtGen.emitirRM("ST", UtGen.AC, 0, UtGen.GP, "almaceno valor en la memoria");
+			UtGen.emitirRM("LDC", UtGen.GP, 0, 0, "limpiar registro GP");
+		}
+		if (UtGen.debug) UtGen.emitirComentario("<- asignacion");
 	}
 	
 	private static void generarLeer(NodoBase nodo){
@@ -295,7 +309,20 @@ public class Generador {
 		if(UtGen.debug)	UtGen.emitirComentario("-> leer");
 		UtGen.emitirRO("IN", UtGen.AC, 0, 0, "leer: lee un valor entero ");
 		direccion = tablaSimbolos.getDireccion(n.getIdentificador());
-		UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "leer: almaceno el valor entero leido en el id "+n.getIdentificador());
+		if(n.getIndex() == null) {
+			UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "leer: almaceno el valor entero leido en el id " + n.getIdentificador());
+		}
+		else{
+			UtGen.emitirRM("ST", UtGen.AC, desplazamientoTmp--, UtGen.MP, "leer: push en la pila valor a guardar");
+			UtGen.emitirRM("LDC", UtGen.AC, direccion, 0, "cargar direccion de memoria");
+			UtGen.emitirRM("ST", UtGen.AC, desplazamientoTmp--, UtGen.MP, "leer: push en la pila tmp direccion base");
+			generar(n.getIndex());
+			UtGen.emitirRM("LD", UtGen.AC1, ++desplazamientoTmp, UtGen.MP, "leer: pop o cargo de la pila el valor de la direccion en AC1");
+			UtGen.emitirRO("ADD", UtGen.GP, UtGen.AC1, UtGen.AC, "calculo direccion real");
+			UtGen.emitirRM("LD", UtGen.AC, ++desplazamientoTmp, UtGen.MP, "leer: pop o cargo de la pila el valor a guardar en AC");
+			UtGen.emitirRM("ST", UtGen.AC, 0, UtGen.GP, "almaceno valor en la memoria");
+			UtGen.emitirRM("LDC", UtGen.GP, 0, 0, "limpiar registro GP");
+		}
 		if(UtGen.debug)	UtGen.emitirComentario("<- leer");
 	}
 	
@@ -321,7 +348,18 @@ public class Generador {
 		int direccion;
 		if(UtGen.debug)	UtGen.emitirComentario("-> identificador");
 		direccion = tablaSimbolos.getDireccion(n.getNombre());
-		UtGen.emitirRM("LD", UtGen.AC, direccion, UtGen.GP, "cargar valor de identificador: "+n.getNombre());
+		if(n.getIndice() == null) {
+			UtGen.emitirRM("LD", UtGen.AC, direccion, UtGen.GP, "cargar valor de identificador: " + n.getNombre());
+		}
+		else{
+			UtGen.emitirRM("LDC", UtGen.AC, direccion, 0, "cargar direccion de memoria");
+			UtGen.emitirRM("ST", UtGen.AC, desplazamientoTmp--, UtGen.MP, "leer: push en la pila tmp direccion base");
+			generar(n.getIndice());
+			UtGen.emitirRM("LD", UtGen.AC1, ++desplazamientoTmp, UtGen.MP, "leer: pop o cargo de la pila el valor de la direccion en AC1");
+			UtGen.emitirRO("ADD", UtGen.GP, UtGen.AC1, UtGen.AC, "calculo direccion real");
+			UtGen.emitirRM("LD", UtGen.AC, 0, UtGen.GP, "cargar valor de identificador: " + n.getNombre());
+			UtGen.emitirRM("LDC", UtGen.GP, 0, 0, "limpiar registro GP");
+		}
 		if(UtGen.debug)	UtGen.emitirComentario("-> identificador");
 	}
 
@@ -351,7 +389,7 @@ public class Generador {
 							break;
 			case	modulo:	if(UtGen.debug)	UtGen.emitirComentario("-> operacion modulo");
 							UtGen.emitirRO("SUB", UtGen.AC1, UtGen.AC1, UtGen.AC, "op: -");
-							UtGen.emitirRM("JGT", UtGen.AC1, -2 , UtGen.PC, "regreso una instruccion si puedo restar (AC>0)");
+							UtGen.emitirRM("JGE", UtGen.AC1, -2 , UtGen.PC, "regreso una instruccion si puedo restar (AC>0)");
 							UtGen.emitirRO("ADD", UtGen.AC, UtGen.AC1, UtGen.AC, "op: +");
 							break;
 			case	menor:	UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: <");
