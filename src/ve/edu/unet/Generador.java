@@ -34,11 +34,130 @@ public class Generador {
 	 */
 	private static int desplazamientoTmp = 0;
 	private static TablaSimbolos tablaSimbolos = null;
+
+	public static int totalError = 0;
 	
 	public static void setTablaSimbolos(TablaSimbolos tabla){
 		tablaSimbolos = tabla;
 	}
-	
+
+	public static void analisisSemantico(NodoBase raiz) {
+		while (raiz != null) {
+			/* Hago el recorrido recursivo */
+			if (raiz instanceof  NodoIf){
+				tipoDecl tipoPrueba = getTipoDeDato(((NodoIf)raiz).getPrueba());
+				if (tipoPrueba != tipoDecl.booleano){
+					totalError++;
+					System.out.println("*** Condiciones solo permiten expresiones booleanas");
+				}
+				analisisSemantico(((NodoIf)raiz).getParteThen());
+				if(((NodoIf)raiz).getParteElse()!=null){
+					analisisSemantico(((NodoIf)raiz).getParteElse());
+				}
+			}
+			else if (raiz instanceof NodoRepeat){
+				tipoDecl tipoPrueba = getTipoDeDato(((NodoRepeat)raiz).getPrueba());
+				if (tipoPrueba != tipoDecl.booleano){
+					totalError++;
+					System.out.println("*** Condiciones solo permiten expresiones booleanas");
+				}
+				analisisSemantico(((NodoRepeat)raiz).getCuerpo());
+			}
+			else if(raiz instanceof NodoAsignacion){
+				NodoAsignacion nodo = (NodoAsignacion)raiz;
+				tipoDecl tipo = tablaSimbolos.BuscarSimbolo(nodo.getIdentificador()).getTipo();
+				if(tipo != getTipoDeDato(nodo.getExpresion())){
+					totalError++;
+					System.out.println("*** Tipos de datos en la asignacion no coinciden");
+				}
+			}
+			else if(raiz instanceof NodoLeer){
+				NodoLeer nodo = (NodoLeer)raiz;
+				tipoDecl tipo = tablaSimbolos.BuscarSimbolo(nodo.getIdentificador()).getTipo();
+				if(tipo != tipoDecl.entero){
+					totalError++;
+					System.out.println("*** Lectura de variabls solo permite valores enteros");
+				}
+			}
+			else if (raiz instanceof NodoFor){
+				NodoAsignacion nasi = (NodoAsignacion)((NodoFor)raiz).getAsignacion();
+				tipoDecl tipoAsi = tablaSimbolos.BuscarSimbolo(nasi.getIdentificador()).getTipo();
+				if(tipoAsi != tipoDecl.entero || getTipoDeDato(nasi.getExpresion()) != tipoDecl.entero){
+					totalError++;
+					System.out.println("*** Asignacion del ciclo for sole permite valores enteros");
+				}
+				tipoDecl tipoExp = getTipoDeDato(((NodoFor)raiz).getExpresion());
+				if(tipoExp != tipoDecl.entero){
+					totalError++;
+					System.out.println("*** Expresion del ciclo for sole permite valores enteros");
+				}
+				analisisSemantico(((NodoFor)raiz).getCuerpo());
+			}
+
+			raiz = raiz.getHermanoDerecha();
+		}
+	}
+
+	public static tipoDecl getTipoDeDato(NodoBase exp)
+	{
+		if(exp instanceof NodoOperacion){
+			NodoOperacion nodo = (NodoOperacion)exp;
+			if(nodo.getOperacion() == tipoOp.not){
+				tipoDecl t = getTipoDeDato(nodo.getOpIzquierdo());
+				if(t == tipoDecl.booleano)
+					return tipoDecl.booleano;
+				System.out.println("*** Operadores logicos solo permite expresiones booleanas");
+				totalError++;
+				return tipoDecl.vacio;
+			}
+			else{
+				tipoDecl t1 = getTipoDeDato(nodo.getOpIzquierdo());
+				tipoDecl t2 = getTipoDeDato(nodo.getOpIzquierdo());
+				if(t1 == t2)
+				{
+					switch (nodo.getOperacion()){
+						case mas:
+						case menos:
+						case por:
+						case entre:
+						case modulo:
+							if(t1 == tipoDecl.entero)
+								return tipoDecl.entero;
+							System.out.println("*** Operadores aritmeticos solo permiten expresiones enteras");
+							break;
+						case igual:
+						case menor:
+						case mayor:
+						case mayorigual:
+						case menorigual:
+						case diferente:
+							if(t1 == tipoDecl.entero)
+								return tipoDecl.booleano;
+							System.out.println("*** Operadores de comparacion solo permiten expresiones enteras");
+							break;
+						case or:
+						case and:
+							if(t1 == tipoDecl.booleano)
+								return tipoDecl.booleano;
+							System.out.println("*** Operadores logicos solo permite expresiones booleanas");
+							break;
+					}
+					totalError++;
+					return tipoDecl.vacio;
+				}
+				System.out.println("*** Tipos de datos en la operacion no coinciden");
+				totalError++;
+				return tipoDecl.vacio;
+			}
+		}
+		else if(exp instanceof NodoValor){
+			return tipoDecl.entero;
+		}
+		else if(exp instanceof NodoIdentificador){
+			return tablaSimbolos.BuscarSimbolo(((NodoIdentificador)exp).getNombre()).getTipo();
+		}
+		return tipoDecl.vacio;
+	}
 	public static void generarCodigoObjeto(NodoBase raiz){
 		System.out.println();
 		System.out.println();

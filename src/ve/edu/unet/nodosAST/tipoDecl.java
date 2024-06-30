@@ -1,5 +1,5 @@
 package ve.edu.unet.nodosAST;
 
 public enum tipoDecl {
-    entero, booleano
+    entero, booleano,vacio
 }

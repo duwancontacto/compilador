@@ -30,7 +30,9 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
 		ts.cargarTabla(root);
 		ts.ImprimirClaves();
 		Generador.setTablaSimbolos(ts);
-		Generador.generarCodigoObjeto(root);
+		Generador.analisisSemantico(root);
+		if(Generador.totalError == 0)
+		    Generador.generarCodigoObjeto(root);
 	}
 
 :}

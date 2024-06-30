@@ -302,7 +302,9 @@ Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols
 		ts.cargarTabla(root);
 		ts.ImprimirClaves();
 		Generador.setTablaSimbolos(ts);
-		Generador.generarCodigoObjeto(root);
+		Generador.analisisSemantico(root);
+		if(Generador.totalError == 0)
+		    Generador.generarCodigoObjeto(root);
 	}
 
 
@@ -1031,9 +1033,9 @@ class CUP$parser$actions {
           case 42: // exp ::= NOT logic_exp 
             {
               NodoBase RESULT =null;
-		int exIleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
-		int exIright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		NodoBase exI = (NodoBase)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		int exleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int exright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		NodoBase ex = (NodoBase)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 if(debug) System.out.println("\t regla 15c");
                 RESULT = new NodoOperacion(exI,tipoOp.not, new NodoValor(0));
