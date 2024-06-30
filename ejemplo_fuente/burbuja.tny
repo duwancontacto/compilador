@@ -1,0 +1,27 @@
+program burbuja
+begin
+    var i : integer;
+    var j : integer;
+    var aux : integer;
+    var vector[6] : integer;
+    for i:=0 to 5 do
+    begin
+        read vector[i];
+    end;
+    for i:=0 to 5 do
+    begin
+        for j:=i to 5 do
+        begin
+            if vector[j] < vector[i] then
+            begin
+                aux := vector[i];
+                vector[i] := vector[j];
+                vector[j] := aux;
+            end;
+        end;
+    end;
+    for i:=0 to 5 do
+    begin
+        write vector[i];
+    end;
+end.

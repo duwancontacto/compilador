@@ -1,0 +1,19 @@
+program vector
+begin
+var vector[8]: integer;
+var i: integer;
+var x: integer;
+read x;
+for i := 0 to 7 do
+begin
+    vector[i] := i + x;
+end;
+read x;
+read vector[x - 5];
+x := vector[x - 5] * 10;
+write x;
+for i := 0 to 7 do
+begin
+    write vector[i];
+end;
+end.

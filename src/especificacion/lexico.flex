@@ -157,6 +157,12 @@ espacio		= [ \t]+
 ")"             {	if(debug) System.out.println("token RPAREN");
 			return sf.newSymbol("RPAREN",sym.RPAREN);
 			}
+"["             {	if(debug) System.out.println("token LCORCHETE");
+			return sf.newSymbol("LCORCHETE",sym.LCORCHETE);
+			}
+"]"             {	if(debug) System.out.println("token RCORCHETE");
+			return sf.newSymbol("RCORCHETE",sym.RCORCHETE);
+			}
 ";"             {	if(debug) System.out.println("token SEMI");
 			return sf.newSymbol("SEMI",sym.SEMI);
 			}

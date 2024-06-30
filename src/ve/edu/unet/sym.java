@@ -15,6 +15,7 @@ public class sym {
   public static final int SEMI = 36;
   public static final int LPAREN = 34;
   public static final int REPEAT = 13;
+  public static final int LCORCHETE = 40;
   public static final int FOR = 4;
   public static final int MINUS = 30;
   public static final int WRITE = 16;
@@ -42,6 +43,7 @@ public class sym {
   public static final int ELSE = 11;
   public static final int READ = 15;
   public static final int TO = 6;
+  public static final int RCORCHETE = 41;
   public static final int THEN = 10;
   public static final int NE = 23;
   public static final int END = 12;
@@ -88,7 +90,9 @@ public class sym {
   "SEMI",
   "VAR",
   "TYPE_IDENTIFIER",
-  "END_PROGRAM"
+  "END_PROGRAM",
+  "LCORCHETE",
+  "RCORCHETE"
   };
 }
 

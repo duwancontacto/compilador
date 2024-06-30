@@ -87,6 +87,8 @@ terminal SEMI;
 terminal VAR;
 terminal TYPE_IDENTIFIER;
 terminal END_PROGRAM;
+terminal LCORCHETE;
+terminal RCORCHETE;
 
 /* Simbolos No Terminales */
 non terminal program;
@@ -176,11 +178,7 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(debug) System.out.
 							:}
 		;
 
-assign_stmt ::= ID:variable 	{: if(debug) System.out.println("\t regla 6 parte del medio"); 
-				/*lineanum=1000; //Pasar/Obtener la linea correcta por el Simbolo
-				String nombre = variable.getName();*/
-				:}
-			ASSIGN exp:ex	{: if(debug) System.out.println("\t regla 6 parte final");
+assign_stmt ::= ID:variable ASSIGN exp:ex	{: if(debug) System.out.println("\t regla 6a");
 					if(variable!=null)
 					RESULT = new NodoAsignacion(variable.toString(),ex);
 					else{
@@ -188,9 +186,17 @@ assign_stmt ::= ID:variable 	{: if(debug) System.out.println("\t regla 6 parte d
 					System.out.println("Ocurrio error en cup # 0001");
 					}
 					:}
+                |  ID:variable  LCORCHETE exp:index RCORCHETE ASSIGN exp:ex	{: if(debug) System.out.println("\t regla 6b");
+                                    if(variable!=null)
+                                    RESULT = new NodoAsignacion(variable.toString(),ex, index);
+                                    else{
+                                    RESULT = null;
+                                    System.out.println("Ocurrio error en cup # 0001");
+                                    }
+                                    :}
 		;
 
-read_stmt   ::= READ ID:variable	{: if(debug) System.out.println("\t regla 7"); 
+read_stmt   ::= READ ID:variable	{: if(debug) System.out.println("\t regla 7a");
 					System.out.println("Leyendo Variable");
 					if(variable!=null)
 					RESULT = new NodoLeer(variable.toString());
@@ -199,6 +205,15 @@ read_stmt   ::= READ ID:variable	{: if(debug) System.out.println("\t regla 7");
 					System.out.println("Ocurrio error en cup # 0002");
 					}
 					:}
+            | READ ID:variable LCORCHETE exp:index RCORCHETE    {: if(debug) System.out.println("\t regla 7b");
+                                System.out.println("Leyendo Variable");
+                                if(variable!=null)
+                                RESULT = new NodoLeer(variable.toString(), index);
+                                else{
+                                RESULT = null;
+                                System.out.println("Ocurrio error en cup # 0002");
+                                }
+                                :}
 		;
 
 write_stmt  ::= WRITE exp:ex	{: if(debug) System.out.println("\t regla 8"); 
@@ -275,6 +290,15 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(debug) System.out.println("\t regla 1
 						System.out.println("Ocurrio error en cup # 0005");
 					}
 					:}
+        | ID:variable LCORCHETE exp:ex RCORCHETE {: if(debug) System.out.println("\t regla 12c");
+					if(variable!=null){
+						System.out.println("Construyendo Nodo ID para Lexema: "+ variable.toString());
+						RESULT= new NodoIdentificador(variable.toString(), ex);
+					}else{
+						RESULT = null;
+						System.out.println("Ocurrio error en cup # 0005");
+					}
+					:}
 		| error	{: if(debug) System.out.println("\t regla 12d"); 
 				System.out.println("Ocurrio error en cup # 0003");
 				RESULT=null;
@@ -286,6 +310,12 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(debug) System.out.println("\t regla 1
         | VAR ID:variable TYPE_IDENTIFIER BOOLEAN {: if(debug) System.out.println("\t regla 13b");
                                             RESULT= new NodoDeclaracion(tipoDecl.booleano, variable.toString());
                                     :}
+        | VAR ID:variable LCORCHETE NUM:size RCORCHETE TYPE_IDENTIFIER INTEGER {: if(debug) System.out.println("\t regla 13c");
+                                                 	RESULT= new NodoDeclaracion(tipoDecl.entero, variable.toString(), Integer.parseInt(size));
+                                                 :}
+        | VAR ID:variable LCORCHETE NUM:size RCORCHETE TYPE_IDENTIFIER BOOLEAN {: if(debug) System.out.println("\t regla 13d");
+                                                     RESULT= new NodoDeclaracion(tipoDecl.booleano, variable.toString(), Integer.parseInt(size));
+                                             :}
         ;
 
 for_stmt ::= FOR assign_stmt:asi TO exp:ex DO BEGIN stmt_seq:cuerpo END
